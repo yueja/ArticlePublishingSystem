@@ -14,85 +14,6 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	/*
-		//对数据库插入数据
-		//1.要有orm对象
-		o := orm.NewOrm()
-		//2.有一个要插入数据的结构体对象
-		user := models.User{}
-		//3.对结构体赋值
-		user.Name = "1111"
-		user.Pwd = "2222"
-		//4.插入数据
-		_, err := o.Insert(&user)
-		if err != nil {
-			beego.Info("插入失败", err)
-			return
-		}
-	*/
-
-	/*
-			//对数据库查看操作
-			//1.要有orm对象
-			o := orm.NewOrm()
-			//2.查询对象
-			user := models.User{}
-			//3。指定查询对象值
-			//照Id查询
-			user.Id=1
-			//4.查询
-			err:=o.Read(&user)
-
-			//3。指定查询对象值
-			//按照Name查询
-			user.Name="1111"
-			//4.查询
-			err:=o.Read(&user,"Name")
-			if err != nil {
-				beego.Info("查询失败", err)
-				return
-			}
-		     beego.Info("查询成功",user)
-	*/
-
-	/*//数据库更新操作
-	//1.要有orm对象
-	o := orm.NewOrm()
-	//2.需要更新的结构体对象
-	user := models.User{}
-	//3。查到需要更新的对象值
-	//照Id查询
-	user.Id=1
-	err:=o.Read(&user)
-	//4.对数据重新赋值
-	if err==nil{
-		user.Name="张三"
-		user.Pwd="123456"
-		_,err=o.Update(&user)
-		if err !=nil{
-			beego.Info("更新失败",err)
-			return
-		}
-	}
-	beego.Info("更新成功",user)
-	*/
-
-	/*  //删除数据库信息
-	//1.要有orm对象
-	o := orm.NewOrm()
-	//2.需要删除的结构体对象
-	user := models.User{}
-	//3。指定删除的对象值
-	//照Id查询
-	user.Id=3
-	//4.删除
-	_,err:=o.Delete(&user)
-	if err!=nil{
-		beego.Info("删除失败",err)
-		return
-	}
-	beego.Info("删除成功",user)
-	*/
 	c.TplName = "register.html"
 }
 
@@ -172,14 +93,13 @@ func (c *MainController) HandleLogin() {
 
 //显示首页内容
 func (c *MainController) ShowIndex() {
-	userName:= c.GetSession("userName")
+	userName := c.GetSession("userName")
 	if userName == nil {
 		c.Redirect("/login", 302) //重定向
 		return
 	}
 	//传递用户名
-	c.Data["userName"]=userName
-
+	c.Data["userName"] = userName
 
 	o := orm.NewOrm()
 	id, err := c.GetInt("select")
@@ -188,7 +108,7 @@ func (c *MainController) ShowIndex() {
 		beego.Info("获取失败")
 	}
 
-	c.Data["typeid"] =id //文章类型ID
+	c.Data["typeid"] = id //文章类型ID
 
 	var articles []models.Article //结构体数组
 	//第一种：将所有数据一页显示
@@ -243,13 +163,13 @@ func (c *MainController) ShowIndex() {
 
 //显示增加文章界面
 func (c *MainController) ShowAdd() {
-	userName:= c.GetSession("userName")
+	userName := c.GetSession("userName")
 	if userName == nil {
 		c.Redirect("/login", 302) //重定向
 		return
 	}
 	//传递用户名
-	c.Data["userName"]=userName
+	c.Data["userName"] = userName
 
 	//获取类型数据
 	o := orm.NewOrm()
@@ -325,14 +245,13 @@ func (c *MainController) HandleAdd() {
 
 //显示内容详情页
 func (c *MainController) ShowContent() {
-	userName:= c.GetSession("userName")
+	userName := c.GetSession("userName")
 	if userName == nil {
 		c.Redirect("/login", 302) //重定向
 		return
 	}
 	//传递用户名
-	c.Data["userName"]=userName
-
+	c.Data["userName"] = userName
 
 	//1.获取文章Id
 	id, err := c.GetInt("id")
@@ -356,13 +275,13 @@ func (c *MainController) ShowContent() {
 
 //显示编辑界面
 func (c *MainController) ShowUpdate() {
-	userName:= c.GetSession("userName")
+	userName := c.GetSession("userName")
 	if userName == nil {
 		c.Redirect("/login", 302) //重定向
 		return
 	}
 	//传递用户名
-	c.Data["userName"]=userName
+	c.Data["userName"] = userName
 
 	//1.获取文章Id
 	id, err := c.GetInt("id")
@@ -469,13 +388,13 @@ func (c *MainController) HandleDelete() {
 
 //显示增加类型
 func (c *MainController) ShowAddType() {
-	userName:= c.GetSession("userName")
+	userName := c.GetSession("userName")
 	if userName == nil {
 		c.Redirect("/login", 302) //重定向
 		return
 	}
 	//传递用户名
-	c.Data["userName"]=userName
+	c.Data["userName"] = userName
 
 	o := orm.NewOrm()
 	var artiType []models.ArticleType
@@ -508,7 +427,7 @@ func (c *MainController) HandleAddType() {
 }
 
 //删除类型
-func (c *MainController) HandleDeleteType(){
+func (c *MainController) HandleDeleteType() {
 	//1拿到数据
 	id, err := c.GetInt("id")
 	if err != nil {
@@ -517,7 +436,7 @@ func (c *MainController) HandleDeleteType(){
 	}
 	//2.执行删除操作
 	o := orm.NewOrm()
-	artiType:= models.ArticleType{Id: id}
+	artiType := models.ArticleType{Id: id}
 	err = o.Read(&artiType)
 	if err != nil {
 		beego.Info("查询错误", err)
@@ -532,7 +451,7 @@ func (c *MainController) HandleDeleteType(){
 	c.Redirect("/addType", 302)
 }
 
-func (c *MainController)LoginOut(){
+func (c *MainController) LoginOut() {
 	c.DelSession("userName")
-	c.Redirect("/login",302)
+	c.Redirect("/login", 302)
 }
